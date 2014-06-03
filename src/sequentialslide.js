@@ -44,7 +44,9 @@ define(function (require, exports, module) {
         overflowX: 'hidden',
         padding: '5px'
       },
-      content: '<div style="width: 190px"; font-weight: bold; font-size: 20px">surface '+i+'</div><div style="width: 190px">'+fillerText+'</div>'
+      content: '<div style="width: 190px"; font-weight: bold; font-size: 20px">Column '+i+'</div><div style="width: 190px">'+
+        ((i==3 ? '<br>Click anywhere to toggle columns<br><br>': ' '))
+        + fillerText + '</div>'
     });
 
     if (i === 1 || i===2 ) {
