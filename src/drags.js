@@ -103,27 +103,33 @@ define(function (require, exports, module) {
       {
         this.bgNo.removeClass('redBackground');
         this.bgNo.removeClass('brownBackground');
+        this.bgNo.setContent('No');
         this.bgYes.removeClass('greenBackground');
         this.bgYes.removeClass('blueBackground');
+        this.bgYes.setContent('Yes');
       }
       if (xpos < -minimumSwipe) {
         if (xpos < -halfScreenWidth) {
           this.bgNo.removeClass('redBackground');
           this.bgNo.addClass('brownBackground');
+          this.bgNo.setContent('Never');
         }
         else {
           this.bgNo.removeClass('brownBackground');
           this.bgNo.addClass('redBackground');
+          this.bgNo.setContent('No')
         }
       }
       if (xpos > minimumSwipe) {
         if (xpos > halfScreenWidth) {
           this.bgYes.removeClass('greenBackground');
           this.bgYes.addClass('blueBackground');
+          this.bgYes.setContent('Always');
         }
         else {
           this.bgYes.removeClass('blueBackground');
           this.bgYes.addClass('greenBackground');
+          this.bgYes.setContent('Yes');
         }
       }
     });
