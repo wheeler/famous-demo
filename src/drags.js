@@ -145,9 +145,9 @@ define(function (require, exports, module) {
       }
 
       if (removeThis) {
+        var thisOuterNode = this.outerNode;
         this.containerMod.setSize([undefined, 0], {duration: 300, curve: Easing.outCirc}, function() {
-          var killLine = _.indexOf(surfaces, this.outerNode);
-          console.log('kill', killLine);
+          var killLine = _.indexOf(surfaces, thisOuterNode);
           if (killLine > 0 && killLine < surfaces.length)
             surfaces.splice(killLine, 1);
         });
