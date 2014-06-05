@@ -1,0 +1,17 @@
+
+.greenBackground, .redBackground, .blueBackground, .brownBackground {
+    color: white;
+    font-weight: bold;
+}
+.greenBackground {
+    background-color: green;
+}
+.redBackground {
+    background-color: red;
+}
+.blueBackground {
+    background-color: blue;
+}
+.brownBackground {
+    background-color: saddlebrown;
+}

@@ -22,6 +22,8 @@ define(function (require, exports, module) {
 
   var screenWidth = 320;
   var halfScreenWidth = screenWidth/2;
+  var threeQuartersScreen = (screenWidth*3)/4;
+  var minimumSwipe = 60;
 
   var instruction = new Surface({
     content: 'Swipe the options below',
@@ -42,13 +44,12 @@ define(function (require, exports, module) {
     var backgroundYesModifier = new StateModifier({
       //on the left
       origin: [0,0],
-      opacity: 0
+      opacity: 1
     });
     var backgroundYes = new Surface({
       content: "Yes",
-      size: [halfScreenWidth, 50],
+      size: [threeQuartersScreen, 50],
       properties: {
-        backgroundColor: "#00FF00",
         lineHeight: "50px",
         paddingLeft: "20px",
         textAlign: "left"
@@ -57,13 +58,12 @@ define(function (require, exports, module) {
     var backgroundNoModifier = new StateModifier({
       //on the right
       origin: [1,0],
-      opacity: 0
+      opacity: 1
     });
     var backgroundNo = new Surface({
       content: "No",
-      size: [halfScreenWidth, 50],
+      size: [threeQuartersScreen, 50],
       properties: {
-        backgroundColor: "#FF0000",
         lineHeight: "50px",
         paddingRight: "20px",
         textAlign: "right"
@@ -83,7 +83,7 @@ define(function (require, exports, module) {
     outerNode.add(containerMod).add(container);
 
     var draggable = new Draggable( {
-      xRange: [-halfScreenWidth, halfScreenWidth],
+      xRange: [-threeQuartersScreen, threeQuartersScreen],
       yRange: [0, 0]
     });
 
@@ -93,24 +93,47 @@ define(function (require, exports, module) {
     draggable.outerNode = outerNode;
     draggable.bgNoMod = backgroundNoModifier;
     draggable.bgYesMod = backgroundYesModifier;
+    draggable.bgNo = backgroundNo;
+    draggable.bgYes = backgroundYes;
 
     //make the background surfaces FADE in
     draggable.on('update', function(e) {
       var xpos = e.position[0];
-      if (xpos < 0) {
-        this.bgNoMod.setOpacity((-xpos/halfScreenWidth) * .75);
+      if (xpos <=minimumSwipe && xpos >= -minimumSwipe)
+      {
+        this.bgNo.removeClass('redBackground');
+        this.bgNo.removeClass('brownBackground');
+        this.bgYes.removeClass('greenBackground');
+        this.bgYes.removeClass('blueBackground');
       }
-      if (xpos >= 0) {
-        this.bgYesMod.setOpacity((xpos/halfScreenWidth) * .75);
+      if (xpos < -minimumSwipe) {
+        if (xpos < -halfScreenWidth) {
+          this.bgNo.removeClass('redBackground');
+          this.bgNo.addClass('brownBackground');
+        }
+        else {
+          this.bgNo.removeClass('brownBackground');
+          this.bgNo.addClass('redBackground');
+        }
+      }
+      if (xpos > minimumSwipe) {
+        if (xpos > halfScreenWidth) {
+          this.bgYes.removeClass('greenBackground');
+          this.bgYes.addClass('blueBackground');
+        }
+        else {
+          this.bgYes.removeClass('blueBackground');
+          this.bgYes.addClass('greenBackground');
+        }
       }
     });
     draggable.on('end', function(e) {
       var removeThis = false;
-      if (e.position[0] == halfScreenWidth) {
+      if (e.position[0] >= minimumSwipe) {
         //YES
         removeThis = true;
       }
-      else if (e.position[0] == -halfScreenWidth) {
+      else if (e.position[0] <= -minimumSwipe) {
         //NO
         removeThis = true;
       }
