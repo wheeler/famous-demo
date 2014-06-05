@@ -129,11 +129,11 @@ define(function (require, exports, module) {
     });
     draggable.on('end', function(e) {
       var removeThis = false;
-      if (e.position[0] >= minimumSwipe) {
+      if (e.position[0] > minimumSwipe) {
         //YES
         removeThis = true;
       }
-      else if (e.position[0] <= -minimumSwipe) {
+      else if (e.position[0] < -minimumSwipe) {
         //NO
         removeThis = true;
       }
@@ -169,9 +169,8 @@ define(function (require, exports, module) {
 
     var node = new RenderNode(draggable);
     node.add(item);
-    //try to put the draggable in front of the background
-
     container.add(node);
+
     //add the background
     container.add(backgroundNoModifier).add(backgroundNo);
     container.add(backgroundYesModifier).add(backgroundYes);
