@@ -1,7 +1,9 @@
 
 .backgroundButton div{
-    display: inline-block;
+  display: inline-block;
+  width: 50%;
 }
+
 
 .greenBackground, .redBackground, .blueBackground, .brownBackground {
     color: white;
@@ -28,4 +30,18 @@
 }
 .activeBackground {
   z-index: 15;
+    color: white;
+    font-weight: bold;
+}
+.activeBackground .greenButton{
+  background-color: green;
+}
+.activeBackground .blueButton{
+  background-color: blue;
+}
+.activeBackground .redButton{
+  background-color: red;
+}
+.activeBackground .brownButton{
+  background-color: saddlebrown;
 }

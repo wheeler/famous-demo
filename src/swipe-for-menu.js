@@ -47,13 +47,12 @@ define(function (require, exports, module) {
       opacity: 1
     });
     var backgroundNo = new Surface({
-      content: "<div>Never</div><div>No</div>",
+      content: "<div class='brownButton'>Never</div><div class='redButton'>No</div>",
       classes: ['backgroundButton'],
       size: [threeQuartersScreen, 50],
       properties: {
         lineHeight: "50px",
-        paddingRight: "20px",
-        textAlign: "right"
+        textAlign: "center"
       }
     });
     var backgroundYesModifier = new StateModifier({
@@ -62,13 +61,12 @@ define(function (require, exports, module) {
       opacity: 1
     });
     var backgroundYes = new Surface({
-      content: "<div>Always</div><div>Yes</div>",
+      content: "<div class='blueButton'>Always</div><div class='greenButton'>Yes</div>",
       classes: ['backgroundButton'],
       size: [threeQuartersScreen, 50],
       properties: {
         lineHeight: "50px",
-        paddingRight: "20px",
-        textAlign: "right"
+        textAlign: "center"
       }
     });
 
@@ -129,13 +127,13 @@ define(function (require, exports, module) {
         this.container.addClass('activeSurface');
         this.surface.removeClass('normalSurface');
 
-        this.bgNo.addClass('redBackground');
+        //this.bgNo.addClass('redBackground');
         this.bgNo.addClass('activeBackground');
         this.bgNoMod.setTransform(Transform.translate(0,25), {
           curve: Easing.inOutSine,
           duration: 200
         });
-        this.bgYes.addClass('greenBackground');
+        //this.bgYes.addClass('greenBackground');
         this.bgYes.addClass('activeBackground');
         this.bgYesMod.setTransform(Transform.translate(0,-25), {
           curve: Easing.inOutSine,
