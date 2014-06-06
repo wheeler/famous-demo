@@ -1,4 +1,8 @@
 
+.backgroundButton div{
+    display: inline-block;
+}
+
 .greenBackground, .redBackground, .blueBackground, .brownBackground {
     color: white;
     font-weight: bold;
@@ -14,4 +18,14 @@
 }
 .brownBackground {
     background-color: saddlebrown;
+}
+
+.normalSurface {
+  z-index: 10;
+}
+.activeSurface {
+  z-index: 20;
+}
+.activeBackground {
+  z-index: 15;
 }

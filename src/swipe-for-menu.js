@@ -41,27 +41,29 @@ define(function (require, exports, module) {
 
   for (var i = 0; i < options.length; i++) {
 
-    var backgroundYesModifier = new StateModifier({
-      //on the left
-      origin: [0,0],
-      opacity: 1
-    });
-    var backgroundYes = new Surface({
-      content: "Yes",
-      size: [threeQuartersScreen, 50],
-      properties: {
-        lineHeight: "50px",
-        paddingLeft: "20px",
-        textAlign: "left"
-      }
-    });
     var backgroundNoModifier = new StateModifier({
       //on the right
       origin: [1, 0],
       opacity: 1
     });
     var backgroundNo = new Surface({
-      content: "No",
+      content: "<div>Never</div><div>No</div>",
+      classes: ['backgroundButton'],
+      size: [threeQuartersScreen, 50],
+      properties: {
+        lineHeight: "50px",
+        paddingRight: "20px",
+        textAlign: "right"
+      }
+    });
+    var backgroundYesModifier = new StateModifier({
+      //on the right
+      origin: [1, 0],
+      opacity: 1
+    });
+    var backgroundYes = new Surface({
+      content: "<div>Always</div><div>Yes</div>",
+      classes: ['backgroundButton'],
       size: [threeQuartersScreen, 50],
       properties: {
         lineHeight: "50px",
@@ -76,15 +78,27 @@ define(function (require, exports, module) {
     var container = new ContainerSurface({
       size: [undefined, 50],
       properties: {
-        overflow: 'hidden'
+        overflow: 'visible'
       }
     });
     var outerNode = new RenderNode();
     outerNode.add(containerMod).add(container);
 
     var draggable = new Draggable( {
-      xRange: [-threeQuartersScreen, threeQuartersScreen],
+      xRange: [-threeQuartersScreen, 0],
       yRange: [0, 0]
+    });
+
+    var item = new Surface({
+      content: options[i],
+      size: [undefined, 50],
+      classes: ['normalSurface'],
+      properties: {
+        backgroundColor: "lightgrey",
+        borderBottom: "1px solid grey",
+        lineHeight: "50px",
+        textAlign: "center"
+      }
     });
 
     draggable.dragId = i;
@@ -92,55 +106,50 @@ define(function (require, exports, module) {
     draggable.containerMod = containerMod;
     draggable.outerNode = outerNode;
     draggable.bgNoMod = backgroundNoModifier;
-    draggable.bgYesMod = backgroundYesModifier;
     draggable.bgNo = backgroundNo;
+    draggable.bgYesMod = backgroundYesModifier;
     draggable.bgYes = backgroundYes;
+    draggable.surface = item;
 
     //make the background surfaces FADE in
     draggable.on('update', function(e) {
       var xpos = e.position[0];
       if (xpos <=minimumSwipe && xpos >= -minimumSwipe) {
+        this.container.removeClass('activeSurface');
+        this.surface.removeClass('activeSurface');
         this.bgNo.removeClass('redBackground');
-        this.bgNo.removeClass('brownBackground');
-        this.bgNo.setContent('No');
+        this.bgNo.removeClass('activeBackground');
+        this.bgNoMod.setTransform(Transform.translate(0,0));
         this.bgYes.removeClass('greenBackground');
-        this.bgYes.removeClass('blueBackground');
-        this.bgYes.setContent('Yes');
+        this.bgYes.removeClass('activeBackground');
+        this.bgYesMod.setTransform(Transform.translate(0,0));
       }
       if (xpos < -minimumSwipe) {
-        if (xpos < -halfScreenWidth) {
-          this.bgNo.removeClass('redBackground');
-          this.bgNo.addClass('brownBackground');
-          this.bgNo.setContent('Never');
-        }
-        else {
-          this.bgNo.removeClass('brownBackground');
-          this.bgNo.addClass('redBackground');
-          this.bgNo.setContent('No')
-        }
-      }
-      if (xpos > minimumSwipe) {
-        if (xpos > halfScreenWidth) {
-          this.bgYes.removeClass('greenBackground');
-          this.bgYes.addClass('blueBackground');
-          this.bgYes.setContent('Always');
-        }
-        else {
-          this.bgYes.removeClass('blueBackground');
-          this.bgYes.addClass('greenBackground');
-          this.bgYes.setContent('Yes');
-        }
+        this.surface.addClass('activeSurface');
+        this.container.addClass('activeSurface');
+        this.surface.removeClass('normalSurface');
+
+        this.bgNo.addClass('redBackground');
+        this.bgNo.addClass('activeBackground');
+        this.bgNoMod.setTransform(Transform.translate(0,25), {
+          curve: Easing.inOutSine,
+          duration: 200
+        });
+        this.bgYes.addClass('greenBackground');
+        this.bgYes.addClass('activeBackground');
+        this.bgYesMod.setTransform(Transform.translate(0,-25), {
+          curve: Easing.inOutSine,
+          duration: 200
+        });
       }
     });
     draggable.on('end', function(e) {
       var removeThis = false;
-      if (e.position[0] > minimumSwipe) {
-        //YES
-        removeThis = true;
-      }
-      else if (e.position[0] < -minimumSwipe) {
-        //NO
-        removeThis = true;
+      if (e.position[0] < -minimumSwipe) {
+        this.setPosition([-threeQuartersScreen,0,0], {
+          curve: Easing.inOutSine,
+          duration: 300
+        });
       }
       else {
         this.setPosition([0,0,0], {
@@ -158,18 +167,6 @@ define(function (require, exports, module) {
         });
       }
 
-    });
-
-    var item = new Surface({
-      content: options[i],
-      size: [undefined, 50],
-      classes: 'normalSurface',
-      properties: {
-        backgroundColor: "lightgrey",
-        borderBottom: "1px solid grey",
-        lineHeight: "50px",
-        textAlign: "center"
-      }
     });
 
     var node = new RenderNode(draggable);
