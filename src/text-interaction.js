@@ -31,22 +31,37 @@ define(function (require, exports, module) {
     return text;
   }
 
+
+
+  function getSelectionPosition() {
+
+    //get the selected range
+    var range = window.getSelection().getRangeAt(0);
+    //get the location of the range
+    var rect = range.getBoundingClientRect();
+    console.log(rect);
+    //determine where to put the button based on the selected text
+    var middle = rect.left + (rect.width / 2);
+    $('#selectionPointer').css({top: (rect.bottom+2), left: middle, position:'absolute'});
+
+
+    $('#otherDetails').val(JSON.stringify(rect))
+
+  }
+
+
+
+
   $(window).bind('selectionEnd', function () {
     // reset selection timeout
     selectionEndTimeout = null;
-
-    // TODO: Do your cool stuff here........
-
-    $('.log ol').append('<li>User Selection Ended</li>');
-    // scroll to bottom of the div
-    $('.log').scrollTop($('.log ol').height());
 
     // get user selection
     var selectedText = getSelectionText();
     // if the selection is not empty show it :)
     if(selectedText != ''){
-      console.log(selectedText);
       $('#textSelection').val(selectedText);
+      getSelectionPosition();
     }
   });
 });
