@@ -37,6 +37,11 @@ define(function (require, exports, module) {
     }
   });
 
+  var buttonEasing = {
+    curve: Easing.inOutSine,
+    duration: 200
+  };
+
   surfaces.push(instruction);
 
   for (var i = 0; i < options.length; i++) {
@@ -113,32 +118,22 @@ define(function (require, exports, module) {
     draggable.on('update', function(e) {
       var xpos = e.position[0];
       if (xpos <=minimumSwipe && xpos >= -minimumSwipe) {
-        this.container.removeClass('activeSurface');
+        this.container.removeClass('activeContainer');
         this.surface.removeClass('activeSurface');
-        this.bgNo.removeClass('redBackground');
         this.bgNo.removeClass('activeBackground');
-        this.bgNoMod.setTransform(Transform.translate(0,0));
-        this.bgYes.removeClass('greenBackground');
         this.bgYes.removeClass('activeBackground');
+        this.bgNoMod.setTransform(Transform.translate(0,0));
         this.bgYesMod.setTransform(Transform.translate(0,0));
       }
       if (xpos < -minimumSwipe) {
-        this.surface.addClass('activeSurface');
-        this.container.addClass('activeSurface');
+        this.container.addClass('activeContainer');
         this.surface.removeClass('normalSurface');
+        this.surface.addClass('activeSurface');
 
-        //this.bgNo.addClass('redBackground');
         this.bgNo.addClass('activeBackground');
-        this.bgNoMod.setTransform(Transform.translate(0,25), {
-          curve: Easing.inOutSine,
-          duration: 200
-        });
-        //this.bgYes.addClass('greenBackground');
+        this.bgNoMod.setTransform(Transform.translate(0,25), buttonEasing);
         this.bgYes.addClass('activeBackground');
-        this.bgYesMod.setTransform(Transform.translate(0,-25), {
-          curve: Easing.inOutSine,
-          duration: 200
-        });
+        this.bgYesMod.setTransform(Transform.translate(0,-25), buttonEasing);
       }
     });
     draggable.on('end', function(e) {

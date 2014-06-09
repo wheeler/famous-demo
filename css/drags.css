@@ -26,12 +26,15 @@
   z-index: 10;
 }
 .activeSurface {
+  z-index: 19;
+}
+.activeContainer {
   z-index: 20;
 }
 .activeBackground {
   z-index: 15;
-    color: white;
-    font-weight: bold;
+  color: white;
+  font-weight: bold;
 }
 .activeBackground .greenButton{
   background-color: green;
