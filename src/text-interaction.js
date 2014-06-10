@@ -94,7 +94,7 @@ define(function (require, exports, module) {
     }
     else {  // Internet Explorer before version 9
       alert ("Your browser does not support this example");
-      $('#miniConsole').val('not supported');
+      //$('#miniConsole').val('not supported');
     }
     setTimeout(function(){scriptIsManipulatingSelection = false;}, 500);
   }
@@ -111,13 +111,13 @@ define(function (require, exports, module) {
     var middle = boundingRect.left + (boundingRect.width / 2);
     $('#selectionPointer').css({top: (boundingRect.bottom+2), left: middle});
 
-    $('#otherDetails').val('bounding\n' + JSON.stringify(boundingRect) + '\n\nclient0\n'+ JSON.stringify(clientRect));
+    //$('#otherDetails').val('bounding\n' + JSON.stringify(boundingRect) + '\n\nclient0\n'+ JSON.stringify(clientRect));
   }
 
   function resetSelectedTextButton() {
     $('#selectionPointer').css({top: 0, left: 0});
-    $('#otherDetails').val(null);
-    $('#textSelection').val(null)
+    //$('#otherDetails').val(null);
+    //$('#textSelection').val(null)
   }
 
   $(window).bind('selectionEnd', function () {
@@ -131,7 +131,7 @@ define(function (require, exports, module) {
       extendToSentence();
 
       selectedText = getSelectionText();
-      $('#textSelection').val(selectedText);
+      //$('#textSelection').val(selectedText);
       setupSelectedTextButton();
     }
     else
