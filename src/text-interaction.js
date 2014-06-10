@@ -66,25 +66,31 @@ define(function (require, exports, module) {
           console.log(getSelectionText());
           console.log(selection);
 
+          var startNode, startOffset, finishNode, finishOffset;
 
           // if the focus node precedes the anchor node
-//          if (selRange.startContainer == selection.focusNode && selRange.startOffset == selection.focusOffset) {
-//            console.log('REVERSE selection action');
-//            selRange.setStart(selection.focusNode, 0);
-//          }
-//          // if the anchor node precedes the focus node
-//          else {
-            //console.log('FORWARD selection action');
-            //todo if the last character of the selection is already the end of the sentence don't extend to another one
-            //look for end of sentence indicator
-            var sentenceEnd = selection.focusNode.data.regexForwardIndexOf(/([\.\?!\n])/g,selection.focusOffset) + 1;
-            //console.log('sentence end', sentenceEnd);
-            var sentenceStart = selection.anchorNode.data.regexBackwardsIndexOf(/([\.\?!\n])/g,selection.anchorOffset);
-            //console.log('sentence start', sentenceStart);
-            selRange.setStart(selection.focusNode, sentenceStart);
-            if(sentenceEnd > 0)
-              selRange.setEnd(selection.focusNode, sentenceEnd);
-//          }
+          if (selRange.startContainer == selection.focusNode && selRange.startOffset == selection.focusOffset) {
+            startNode = selection.focusNode;
+            startOffset = selection.focusOffset;
+            finishNode = selection.anchorNode;
+            finishOffset = selection.anchorOffset;
+          }
+          // if the anchor node precedes the focus node
+          else {
+            startNode = selection.anchorNode;
+            startOffset = selection.anchorOffset;
+            finishNode = selection.focusNode;
+            finishOffset = selection.focusOffset;
+          }
+          //todo if the last character of the selection is already the end of the sentence don't extend to another one
+
+          var sentenceBarrier = /([\.\?!\n])/g;
+
+          var sentenceEnd = finishNode.data.regexForwardIndexOf(sentenceBarrier, finishOffset) + 1;
+          var sentenceStart = startNode.data.regexBackwardsIndexOf(sentenceBarrier, startOffset);
+          selRange.setStart(startNode, sentenceStart);
+          if(sentenceEnd > 0)
+            selRange.setEnd(finishNode, sentenceEnd);
 
           selection.removeAllRanges();
           selection.addRange (selRange);
