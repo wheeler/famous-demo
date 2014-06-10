@@ -12,7 +12,7 @@ String.prototype.regexBackwardsIndexOf = function(regex, endPos) {
   var _result;
   while((_result = regex.exec(stringToWorkWith)) != null) {
     lastIndexOf = _result.index;
-    console.log('regex while', lastIndexOf);
+    //console.log('regex while', lastIndexOf);
   }
   if (lastIndexOf == -1)
     return 0;
@@ -68,24 +68,23 @@ define(function (require, exports, module) {
 
 
           // if the focus node precedes the anchor node
-          if (selRange.startContainer == selection.focusNode && selRange.startOffset == selection.focusOffset) {
-            console.log('REVERSE selection action');
-            selRange.setStart(selection.focusNode, 0);
-          }
-          // if the anchor node precedes the focus node
-          else {
-            console.log('FORWARD selection action');
+//          if (selRange.startContainer == selection.focusNode && selRange.startOffset == selection.focusOffset) {
+//            console.log('REVERSE selection action');
+//            selRange.setStart(selection.focusNode, 0);
+//          }
+//          // if the anchor node precedes the focus node
+//          else {
+            //console.log('FORWARD selection action');
             //todo if the last character of the selection is already the end of the sentence don't extend to another one
             //look for end of sentence indicator
             var sentenceEnd = selection.focusNode.data.regexForwardIndexOf(/([\.\?!\n])/g,selection.focusOffset) + 1;
-            console.log('sentence end', sentenceEnd);
-            var sentenceStart = selection.focusNode.data.regexBackwardsIndexOf(/([\.\?!\n])/g,selection.focusOffset);
-            console.log('sentence start', sentenceStart);
-            selRange.setEnd(selection.focusNode, sentenceStart);
+            //console.log('sentence end', sentenceEnd);
+            var sentenceStart = selection.anchorNode.data.regexBackwardsIndexOf(/([\.\?!\n])/g,selection.anchorOffset);
+            //console.log('sentence start', sentenceStart);
+            selRange.setStart(selection.focusNode, sentenceStart);
             if(sentenceEnd > 0)
               selRange.setEnd(selection.focusNode, sentenceEnd);
-
-          }
+//          }
 
           selection.removeAllRanges();
           selection.addRange (selRange);
@@ -109,13 +108,13 @@ define(function (require, exports, module) {
 
     //determine where to put the button based on the selected text
     var middle = boundingRect.left + (boundingRect.width / 2);
-    $('#selectionPointer').css({top: (boundingRect.bottom+2), left: middle});
+    $('#selectionPointer').css({top: (boundingRect.bottom+2), left: middle, visibility: 'visible'});
 
     //$('#otherDetails').val('bounding\n' + JSON.stringify(boundingRect) + '\n\nclient0\n'+ JSON.stringify(clientRect));
   }
 
   function resetSelectedTextButton() {
-    $('#selectionPointer').css({top: 0, left: 0});
+    $('#selectionPointer').css({top: 0, left: 0, visibility: 'hidden'});
     //$('#otherDetails').val(null);
     //$('#textSelection').val(null)
   }
