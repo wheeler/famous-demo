@@ -1,10 +1,11 @@
 .bubble {
     width: 80px;
-    margin-top: 12px; /* 10 px for the pointer, 2 extra px for spacing */
+    margin-top: 16px; /* 10 px for the pointer, 6 extra px for spacing */
     padding: 6px;
     position: relative;
     border-radius: 10px;
     text-align: center;
+    font-size: 80%;
 }
 .bubble:after {
     content: "";
