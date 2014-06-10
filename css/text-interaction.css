@@ -1,0 +1,18 @@
+.bubble {
+    width: 80px;
+    margin-top: 12px; /* 10 px for the pointer, 2 extra px for spacing */
+    padding: 10px;
+    position: relative;
+    border-radius: 10px;
+    text-align: center;
+}
+.bubble:after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 40px;
+    border-bottom: 10px solid transparent;
+    border-bottom-color: inherit;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}

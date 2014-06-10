@@ -108,7 +108,8 @@ define(function (require, exports, module) {
 
     //determine where to put the button based on the selected text
     var middle = boundingRect.left + (boundingRect.width / 2);
-    $('#selectionPointer').css({top: (boundingRect.bottom+2), left: middle, visibility: 'visible'});
+    middle = middle - 40; //adjust for width of popup
+    $('#selectionPointer').css({top: boundingRect.bottom, left: middle, visibility: 'visible'});
 
     //$('#otherDetails').val('bounding\n' + JSON.stringify(boundingRect) + '\n\nclient0\n'+ JSON.stringify(clientRect));
   }
