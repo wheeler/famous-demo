@@ -92,6 +92,7 @@ define(function (require, exports, module) {
     }
     else {  // Internet Explorer before version 9
       alert ("Your browser does not support this example");
+      $('#miniConsole').val('not supported');
     }
     setTimeout(function(){scriptIsManipulatingSelection = false;}, 500);
   }
