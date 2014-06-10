@@ -8,14 +8,16 @@ String.prototype.regexBackwardsIndexOf = function(regex, endPos) {
   console.log(this.substring(0, endPos || 0));
   var stringToWorkWith = this.substring(0, endPos || 0);
 
-//  var lastIndexOf = -1;
-//  var nextStop = 0;
-//  while((result = regex.exec(stringToWorkWith)) != null) {
-//    lastIndexOf = result.index;
-//    regex.lastIndex = ++nextStop;
-//  }
-//  return lastIndexOf;
-  return 0;
+  var lastIndexOf = -1;
+  var _result;
+  while((_result = regex.exec(stringToWorkWith)) != null) {
+    lastIndexOf = _result.index;
+    console.log('regex while', lastIndexOf);
+  }
+  if (lastIndexOf == -1)
+    return 0;
+  return lastIndexOf+2;
+  //return 0;
 };
 
 define(function (require, exports, module) {
@@ -75,9 +77,9 @@ define(function (require, exports, module) {
             console.log('FORWARD selection action');
             //todo if the last character of the selection is already the end of the sentence don't extend to another one
             //look for end of sentence indicator
-            var sentenceEnd = selection.focusNode.data.regexForwardIndexOf(/([\.\?!\n])/,selection.focusOffset) + 1;
+            var sentenceEnd = selection.focusNode.data.regexForwardIndexOf(/([\.\?!\n])/g,selection.focusOffset) + 1;
             console.log('sentence end', sentenceEnd);
-            var sentenceStart = selection.focusNode.data.regexBackwardsIndexOf(/([\.\?!\n])/,selection.focusOffset);
+            var sentenceStart = selection.focusNode.data.regexBackwardsIndexOf(/([\.\?!\n])/g,selection.focusOffset);
             console.log('sentence start', sentenceStart);
             selRange.setEnd(selection.focusNode, sentenceStart);
             if(sentenceEnd > 0)
