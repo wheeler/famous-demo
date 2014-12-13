@@ -11,6 +11,7 @@ define(function (require) {
 
   var surface = new Surface({
     size: [undefined, undefined],
+    classes: ['webkit-overflow-scrolling-touch'],
     properties: {
       backgroundColor: '#aaaaaa',
       overflowY: 'scroll',
