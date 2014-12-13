@@ -5,8 +5,9 @@ define(function (require) {
   var Surface = require('famous/core/Surface');
   var mainContext = Engine.createContext();
 
-  var fillerText = 'f f f f f<br>f f f f f<br>f f f f f<br>f f f f f<br>f f f f f<br>f f f f f<br>';
-  fillerText = fillerText + fillerText + fillerText + fillerText + fillerText;
+  var fillerText = 'f f f f f<br>';
+  for (i = 0 ; i < 10 ; i++)
+    fillerText = fillerText + fillerText;
 
   var surface = new Surface({
     size: [undefined, undefined],

@@ -30,8 +30,9 @@ define(function (require, exports, module) {
     ratios: initialRatios
   });
 
-  var fillerText = 'f f f f f<br>f f f f f<br>f f f f f<br>f f f f f<br>f f f f f<br>f f f f f<br>';
-  fillerText = fillerText + fillerText + fillerText + fillerText + fillerText;
+  var fillerText = 'f f f f f<br>';
+  for (i = 0 ; i < 10 ; i++)
+    fillerText = fillerText + fillerText;
 
 
   var surfaces = [];
