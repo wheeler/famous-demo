@@ -36,7 +36,7 @@ define(function (require, exports, module) {
   });
 
   var fillerText = 'f f f f f<br>';
-  for (i = 0 ; i < 10 ; i++)
+  for (i = 0 ; i < 7 ; i++)
     fillerText = fillerText + fillerText;
 
   var sizes = [
