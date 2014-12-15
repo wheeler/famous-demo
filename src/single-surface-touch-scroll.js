@@ -2,6 +2,7 @@
 define(function (require) {
 
   var Engine = require('famous/core/Engine');
+  Engine.setOptions({appMode: false});
   var Surface = require('famous/core/Surface');
   var mainContext = Engine.createContext();
 
@@ -11,17 +12,17 @@ define(function (require) {
 
   var surface = new Surface({
     size: [undefined, undefined],
-    classes: ['webkit-overflow-scrolling-touch'],
+    classes: ['scrollable-surface'],
     properties: {
       backgroundColor: '#aaaaaa',
-      overflowY: 'scroll',
-      //overflowY: 'auto',
-      overflowX: 'hidden',
       padding: '5px'
     },
-    content: '<div>DIV with long content in the <code>size: [undefined, undefined]</code> surface.<br>'+ fillerText + '</div>'
+    content: '<pre>Engine.setOptions({appMode: false});</pre>' +
+    'Surface\n<pre>size: [undefined, undefined],\nclasses: [\'scrollable-surface\']\n\n.scrollable-surface {\n'+
+    '  overflow-y: scroll;\n  overflow-x: hidden;\n  -webkit-overflow-scrolling: touch;\n}</pre>' +
+    'note: if you have background surfaces you may need explicit z-indexes for touch to work.<br/><br/>' +
+    fillerText
   });
 
   mainContext.add(surface);
-
 });

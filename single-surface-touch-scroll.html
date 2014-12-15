@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-  <title>famo.us App</title>
+  <title>Famo.us scrollable surface content</title>
   <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no"/>
   <meta name="mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -21,8 +21,17 @@
 
 
   <style type="text/css">
-    .webkit-overflow-scrolling-touch {
+    .scrollable-surface {
+      overflow-y: scroll;
+      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
+    }
+    pre {
+      background-color: #eaeaea;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: smaller;
+      width: 90%;
     }
   </style>
 
