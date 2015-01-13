@@ -22,7 +22,7 @@ define(function (require) {
       backgroundColor: '#bbaabb',
       padding: '5px'
     },
-    content: 'Surface #2 <code>StateModifier({ transform: Transform.translate (130,170) });</code>'
+    content: 'Surface #2 <code>StateModifier({ transform: Transform.translate (120,170) });</code>'
   });
 
   var behindModifier = new StateModifier({
