@@ -48,6 +48,7 @@ define(function (require, exports, module) {
 
     var backgroundNoModifier = new StateModifier({
       //on the right
+      align: [1, 0],
       origin: [1, 0],
       opacity: 1
     });
@@ -62,6 +63,7 @@ define(function (require, exports, module) {
     });
     var backgroundYesModifier = new StateModifier({
       //on the right
+      align: [1, 0],
       origin: [1, 0],
       opacity: 1
     });
