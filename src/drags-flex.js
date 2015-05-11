@@ -14,13 +14,10 @@ define(function (require, exports, module) {
 
   var mainContext = Engine.createContext();
 
-  var scrollview = new Scrollview();
-  var surfaces = [];
   var options = ['Chinese','Italian','Burgers OR...<br>pub','Pizza','Japanese','Thai','Mexican','Salad','Burmese','New american',
     'Seafood','Steak','German','BBQ','Indian', 'Mediterranean','Vietnamese','Stay home and eat ice cream'];
 
-  scrollview.sequenceFrom(surfaces);
-  var flexScrollView =  new FlexScrollView({
+  var flexScrollView = new FlexScrollView({
     overscroll: false, // this still allows a visual glitch when overscrolling but prevents wild bounces.
     container: {
       properties: {
@@ -29,11 +26,10 @@ define(function (require, exports, module) {
     },
     useContainer: true,
     autoPipeEvents: false,
-    flow: false,
+    flow: true,
     mouseMove: false
   });
 
-  flexScrollView.sequenceFrom(surfaces);
 
   var screenWidth = 320;
   var halfScreenWidth = screenWidth/2;
@@ -52,7 +48,7 @@ define(function (require, exports, module) {
     }
   });
 
-  surfaces.push(instruction);
+  flexScrollView.push(instruction);
 
   for (var i = 0; i < options.length; i++) {
 
@@ -154,11 +150,11 @@ define(function (require, exports, module) {
       var removeThis = false;
       if (e.position[0] > minimumSwipe) {
         //YES
-        removeThis = true;
+        flexScrollView.remove(this.outerNode);
       }
       else if (e.position[0] < -minimumSwipe) {
         //NO
-        removeThis = true;
+        flexScrollView.remove(this.outerNode);
       }
       else {
         this.setPosition([0,0,0], {
@@ -166,16 +162,6 @@ define(function (require, exports, module) {
           duration: 300
         });
       }
-
-      if (removeThis) {
-        var thisOuterNode = this.outerNode;
-        this.containerMod.setSize([undefined, 0], {duration: 300, curve: Easing.outCirc}, function() {
-          var killLine = _.indexOf(surfaces, thisOuterNode);
-          if (killLine > 0 && killLine < surfaces.length)
-            surfaces.splice(killLine, 1);
-        });
-      }
-
     });
 
     var item = new Surface({
@@ -199,8 +185,8 @@ define(function (require, exports, module) {
     container.add(backgroundYesModifier).add(backgroundYes);
 
     item.pipe(draggable);
-    item.pipe(scrollview);
-    surfaces.push(outerNode);
+    item.pipe(flexScrollView);
+    flexScrollView.push(outerNode);
   }
 
   mainContext.add(flexScrollView);
