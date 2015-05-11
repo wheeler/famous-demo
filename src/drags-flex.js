@@ -24,6 +24,11 @@ define(function (require, exports, module) {
         overflow: 'hidden'
       }
     },
+    layoutOptions: {
+      isSectionCallback: function(renderNode) {
+        return renderNode.isSection;
+      }
+    },
     useContainer: true,
     autoPipeEvents: false,
     flow: true,
@@ -47,6 +52,7 @@ define(function (require, exports, module) {
       zIndex: 10
     }
   });
+  instruction.isSection = true;
 
   flexScrollView.push(instruction);
 
