@@ -75,15 +75,8 @@ define(function (require, exports, module) {
       size: [undefined, 50]
     });
 
-    // TODO: investigate if we can avoid container surfaces! They are bad for Famo.us performance.
-    var container = new ContainerSurface({
-      size: [undefined, 50],
-      properties: {
-        overflow: 'hidden'
-      }
-    });
     var outerNode = new RenderNode();
-    outerNode.add(containerMod).add(container);
+    var containerNode = outerNode.add(containerMod);
 
     var draggable = new Draggable( {
       xRange: [-threeQuartersScreen, threeQuartersScreen],
@@ -91,7 +84,6 @@ define(function (require, exports, module) {
     });
 
     draggable.dragId = i;
-    draggable.container = container;
     draggable.containerMod = containerMod;
     draggable.outerNode = outerNode;
     draggable.bgNoMod = backgroundNoModifier;
@@ -177,11 +169,11 @@ define(function (require, exports, module) {
 
     var node = new RenderNode(draggable);
     node.add(item);
-    container.add(node);
+    containerNode.add(node);
 
     //add the background
-    container.add(backgroundNoModifier).add(backgroundNo);
-    container.add(backgroundYesModifier).add(backgroundYes);
+    containerNode.add(backgroundNoModifier).add(backgroundNo);
+    containerNode.add(backgroundYesModifier).add(backgroundYes);
 
     item.pipe(draggable);
     item.pipe(scrollview);

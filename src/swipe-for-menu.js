@@ -80,14 +80,8 @@ define(function (require, exports, module) {
     var containerMod = new StateModifier({
       size: [undefined, 50]
     });
-    var container = new ContainerSurface({
-      size: [undefined, 50],
-      properties: {
-        overflow: 'visible'
-      }
-    });
     var outerNode = new RenderNode();
-    outerNode.add(containerMod).add(container);
+    var containerNode = outerNode.add(containerMod);
 
     var draggable = new Draggable( {
       xRange: [-threeQuartersScreen, 0],
@@ -107,7 +101,7 @@ define(function (require, exports, module) {
     });
 
     draggable.dragId = i;
-    draggable.container = container;
+    draggable.containerNode = containerNode;
     draggable.containerMod = containerMod;
     draggable.outerNode = outerNode;
     draggable.bgNoMod = backgroundNoModifier;
@@ -120,7 +114,7 @@ define(function (require, exports, module) {
     draggable.on('update', function(e) {
       var xpos = e.position[0];
       if (xpos <=minimumSwipe && xpos >= -minimumSwipe) {
-        this.container.removeClass('activeContainer');
+        this.containerNode.removeClass('activeContainer');
         this.surface.removeClass('activeSurface');
         this.bgNo.removeClass('activeBackground');
         this.bgYes.removeClass('activeBackground');
@@ -128,7 +122,7 @@ define(function (require, exports, module) {
         this.bgYesMod.setTransform(Transform.translate(0,0));
       }
       if (xpos < -minimumSwipe) {
-        this.container.addClass('activeContainer');
+        this.containerNode.addClass('activeContainer');
         this.surface.removeClass('normalSurface');
         this.surface.addClass('activeSurface');
 
@@ -166,11 +160,11 @@ define(function (require, exports, module) {
 
     var node = new RenderNode(draggable);
     node.add(item);
-    container.add(node);
+    containerNode.add(node);
 
     //add the background
-    container.add(backgroundNoModifier).add(backgroundNo);
-    container.add(backgroundYesModifier).add(backgroundYes);
+    containerNode.add(backgroundNoModifier).add(backgroundNo);
+    containerNode.add(backgroundYesModifier).add(backgroundYes);
 
     item.pipe(draggable);
     item.pipe(scrollview);
