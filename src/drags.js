@@ -74,6 +74,8 @@ define(function (require, exports, module) {
     var containerMod = new StateModifier({
       size: [undefined, 50]
     });
+
+    // TODO: investigate if we can avoid container surfaces! They are bad for Famo.us performance.
     var container = new ContainerSurface({
       size: [undefined, 50],
       properties: {
@@ -100,7 +102,7 @@ define(function (require, exports, module) {
     //make the background surfaces FADE in
     draggable.on('update', function(e) {
       var xpos = e.position[0];
-      if (xpos <=minimumSwipe && xpos >= -minimumSwipe) {
+      if (xpos <= minimumSwipe && xpos >= -minimumSwipe) {
         this.bgNo.removeClass('redBackground');
         this.bgNo.removeClass('brownBackground');
         this.bgNo.setContent('No');
@@ -117,7 +119,7 @@ define(function (require, exports, module) {
         else {
           this.bgNo.removeClass('brownBackground');
           this.bgNo.addClass('redBackground');
-          this.bgNo.setContent('No')
+          this.bgNo.setContent('No');
         }
       }
       if (xpos > minimumSwipe) {
@@ -164,7 +166,7 @@ define(function (require, exports, module) {
     var item = new Surface({
       content: options[i],
       size: [undefined, 50],
-      classes: 'normalSurface',
+      classes: ['normalSurface'],
       properties: {
         backgroundColor: "lightgrey",
         borderBottom: "1px solid grey",
