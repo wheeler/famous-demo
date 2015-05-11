@@ -14,7 +14,7 @@ define(function (require) {
       backgroundColor: '#aaaaaa',
       padding: '5px'
     },
-    content: 'Surface #1 <code>StateModifier({ transform: Transform.behind});</code> <b>This surface not appear in Mobile Safari (iOS & iOS Simulator)</b>'
+    content: 'Surface #1 <code>StateModifier({ transform: Transform.behind});</code> <b>This surface does not appear in Mobile Safari (iOS & iOS Simulator)</b>'
   });
   var surface2 = new Surface({
     size: [200, 200],
