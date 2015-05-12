@@ -114,7 +114,6 @@ define(function (require, exports, module) {
     draggable.on('update', function(e) {
       var xpos = e.position[0];
       if (xpos <=minimumSwipe && xpos >= -minimumSwipe) {
-        this.containerNode.removeClass('activeContainer');
         this.surface.removeClass('activeSurface');
         this.bgNo.removeClass('activeBackground');
         this.bgYes.removeClass('activeBackground');
@@ -122,7 +121,6 @@ define(function (require, exports, module) {
         this.bgYesMod.setTransform(Transform.translate(0,0));
       }
       if (xpos < -minimumSwipe) {
-        this.containerNode.addClass('activeContainer');
         this.surface.removeClass('normalSurface');
         this.surface.addClass('activeSurface');
 
