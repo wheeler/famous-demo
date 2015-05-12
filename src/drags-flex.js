@@ -11,6 +11,7 @@ define(function (require, exports, module) {
   var StateModifier = require('famous/modifiers/StateModifier');
   var Easing = require('famous/transitions/Easing');
   var FlexScrollView = require('famous-flex/FlexScrollView');
+  var FastClick = require('famous/inputs/FastClick');
 
   var mainContext = Engine.createContext();
 
@@ -40,9 +41,10 @@ define(function (require, exports, module) {
   var halfScreenWidth = screenWidth/2;
   var threeQuartersScreen = (screenWidth*3)/4;
   var minimumSwipe = 60;
+  var swipeEnabled = true;
 
   var instruction = new Surface({
-    content: 'Swipe the options below',
+    content: 'Swipe the options below - enabled [toggle]',
     size: [undefined, 50],
     properties: {
       backgroundColor: "darkgrey",
@@ -53,8 +55,25 @@ define(function (require, exports, module) {
     }
   });
   instruction.isSection = true;
+  instruction.on('click', function() {
+    swipeEnabled = !swipeEnabled;
+    if (swipeEnabled) {
+      this.setContent('Swipe the options below - enabled [toggle]');
+      _.each(allDragables, function(draggable) {
+        draggable.activate();
+      })
+    }
+    else {
+      this.setContent('Swipe the options below - DISABLED [toggle]');
+      _.each(allDragables, function(draggable) {
+        draggable.deactivate();
+      })
+    }
+  });
 
   flexScrollView.push(instruction);
+
+  var allDragables = [];
 
   for (var i = 0; i < options.length; i++) {
 
@@ -147,17 +166,22 @@ define(function (require, exports, module) {
       var removeThis = false;
       if (e.position[0] > minimumSwipe) {
         //YES
-        flexScrollView.remove(this.outerNode);
+        removeThis = true;
       }
       else if (e.position[0] < -minimumSwipe) {
         //NO
-        flexScrollView.remove(this.outerNode);
+        removeThis = true;
       }
       else {
         this.setPosition([0,0,0], {
           curve: Easing.inOutSine,
           duration: 300
         });
+      }
+
+      if (removeThis) {
+        allDragables.splice(_.indexOf(allDragables, this), 1);
+        flexScrollView.remove(this.outerNode);
       }
     });
 
@@ -183,10 +207,10 @@ define(function (require, exports, module) {
 
     item.pipe(draggable);
     item.pipe(flexScrollView);
+    allDragables.push(draggable);
     flexScrollView.push(outerNode);
   }
 
   mainContext.add(flexScrollView);
-  //mainContext.add(scrollview);
 
 });
