@@ -51,7 +51,7 @@ define(function (require, exports, module) {
       color: 'white',
       lineHeight: "50px",
       textAlign: "center",
-      zIndex: 10
+      zIndex: 20
     }
   });
   instruction.isSection = true;
