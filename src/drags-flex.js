@@ -77,6 +77,7 @@ define(function (require, exports, module) {
 
   for (var i = 0; i < options.length; i++) {
 
+    // SURFACES / MODIFIERS
     var backgroundYesModifier = new StateModifier({
       //on the left
       origin: [0,0],
@@ -106,18 +107,49 @@ define(function (require, exports, module) {
         textAlign: "right"
       }
     });
-
     var containerMod = new StateModifier({
       size: [undefined, 50]
     });
-
-    var outerNode = new RenderNode();
-    var containerNode = outerNode.add(containerMod);
-
     var draggable = new Draggable( {
       xRange: [-threeQuartersScreen, threeQuartersScreen],
       yRange: [0, 0]
     });
+    var item = new Surface({
+      content: options[i],
+      size: [undefined, 50],
+      classes: ['normalSurface'],
+      properties: {
+        backgroundColor: "lightgrey",
+        borderBottom: "1px solid grey",
+        lineHeight: "50px",
+        textAlign: "center"
+      }
+    });
+
+    /**
+
+     Our render tree:                    Pipes:
+
+     FlexScrollView                      <---.
+     `--RenderNode "OuterNode"               |
+        `--Size Modifier "ContainerNode"     |
+           |--BgMod                          |
+           |  `--BG                          |
+           `--Draggable                  <---|
+              `--Surface              -------'
+
+     */
+    var outerNode = new RenderNode();
+    var containerNode = outerNode.add(containerMod);
+
+    containerNode.add(draggable).add(item);
+
+    //add the background
+    containerNode.add(backgroundNoModifier).add(backgroundNo);
+    containerNode.add(backgroundYesModifier).add(backgroundYes);
+
+    item.pipe(draggable);
+    item.pipe(flexScrollView);
 
     draggable.dragId = i;
     draggable.outerNode = outerNode;
@@ -185,28 +217,6 @@ define(function (require, exports, module) {
       }
     });
 
-    var item = new Surface({
-      content: options[i],
-      size: [undefined, 50],
-      classes: ['normalSurface'],
-      properties: {
-        backgroundColor: "lightgrey",
-        borderBottom: "1px solid grey",
-        lineHeight: "50px",
-        textAlign: "center"
-      }
-    });
-
-    var node = new RenderNode(draggable);
-    node.add(item);
-    containerNode.add(node);
-
-    //add the background
-    containerNode.add(backgroundNoModifier).add(backgroundNo);
-    containerNode.add(backgroundYesModifier).add(backgroundYes);
-
-    item.pipe(draggable);
-    item.pipe(flexScrollView);
     allDragables.push(draggable);
     flexScrollView.push(outerNode);
   }
