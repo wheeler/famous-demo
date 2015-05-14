@@ -3,6 +3,7 @@ define(function (require, exports, module) {
 
   var Engine     = require("famous/core/Engine");
   var Surface    = require("famous/core/Surface");
+  var Modifier   = require("famous/core/Modifier");
   var ContainerSurface = require("famous/surfaces/ContainerSurface");
 
   var ScrollController = require('famous-flex/ScrollController');
@@ -30,6 +31,8 @@ define(function (require, exports, module) {
       this.goToFirstPage();
     else
       this.goToNextPage();
+    var newIndex = (this.getFirstVisibleItem().index + 1) % pages.length;
+    dotsSurface.setContent(dotsContent(newIndex));
   };
 
   var pages = _.map(['FIRST','SECOND','THIRD'], function(content) {
@@ -58,6 +61,35 @@ define(function (require, exports, module) {
   });
   //container.context.setPerspective(1500);
   container.add(scrollWheel);
+
+  var dotsContent = function(selectedIndex) {
+    var result = '';
+    for (var i=0 ; i<pages.length ; i++) {
+      if (result !== '')
+        result += ' ';
+      if (i === selectedIndex)
+        result += '<span style="color: white;">&#9679;</span>';
+      else
+        result += '&#9679;';
+    }
+    return result;
+  };
+  var dotsSurface = new Surface({
+    content: dotsContent(0),
+    properties: {
+      textAlign: 'center',
+      fontSize: '24px'
+    }
+  });
+  var dotsModifier = new Modifier({
+    size: [undefined, 28],
+    align: [1,1],
+    origin: [1,1]
+  });
+
+  container.add(dotsModifier).add(dotsSurface);
+
+
 
   mainContext.add(container);
 
