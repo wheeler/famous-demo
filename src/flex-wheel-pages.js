@@ -18,8 +18,8 @@ define(function (require, exports, module) {
     paginationEnergyThresshold: 0.5,
     enabled: false,
     layoutOptions: {
-      itemSize: 300,
-      diameter: 300,
+      itemSize: 400,
+      diameter: 400,
       radialOpacity: 0  // make items at the edges more transparent
     }
   });
