@@ -80,19 +80,6 @@ define(function (require, exports, module) {
   //
   // Set up the DOTS at the bottom
   //
-
-  var dotsContent = function(selectedIndex) {
-    var result = '';
-    for (var i=0 ; i<pages.length ; i++) {
-      if (result !== '')
-        result += ' ';
-      if (i === selectedIndex)
-        result += '<span style="color: white;">&#9679;</span>';
-      else
-        result += '&#9679;';
-    }
-    return result;
-  };
   var dotsSurface = new Surface({
     properties: {
       textAlign: 'center',
