@@ -14,7 +14,7 @@ define(function (require, exports, module) {
 
   var mainContext = Engine.createContext();
 
-// Create scroll-wheel
+  // Create scroll-wheel
   var scrollWheel = new ScrollController({
     layout: WheelLayout,
     direction: 0,
@@ -39,13 +39,13 @@ define(function (require, exports, module) {
     }
     else
       this.goToNextPage();
-    dotsSurface.updateDots();
+    updateDotsAndArrows();
   };
   scrollWheel.toPage = function(pageId) {
     if (pageId >= 0 && pageId < pages.length && scrollWheel.index !== pageId) {
       scrollWheel.goToRenderNode(pages[pageId]);
       scrollWheel.index = pageId;
-      dotsSurface.updateDots();
+      updateDotsAndArrows();
     }
   };
 
@@ -67,7 +67,7 @@ define(function (require, exports, module) {
 
   wheel = scrollWheel;
 
-// Create a container-surface for clipping and give it a nice perspective
+  // Create a container-surface for clipping and give it a nice perspective
   var container = new ContainerSurface({
     properties: {
       overflow: 'hidden',
@@ -89,7 +89,7 @@ define(function (require, exports, module) {
       zIndex: 10
     }
   });
-  dotsSurface.updateDots = function() {
+  var updateDotsAndArrows = function() {
     var result = '';
     for (var i=0 ; i<pages.length ; i++) {
       if (result !== '')
@@ -99,9 +99,10 @@ define(function (require, exports, module) {
       else
         result += '<div style="display: table-cell; vertical-align: top; padding: 4px 5px; cursor: pointer; " data-dot-index="'+i+'">&#9679;</div>';
     }
-    this.setContent(result)
+    dotsSurface.setContent(result);
+    backArrowSurface.setContent((scrollWheel.index === 0 ? '' : '&larr;'));
+    forwardArrowSurface.setContent((scrollWheel.index === pages.length-1 ? '&#8635;' : '&rarr;'));
   };
-  dotsSurface.updateDots();
   dotsSurface.on('click', function(evt) {
     var index = $(evt.target).data('dotIndex');
     if (_.isNumber(index))
@@ -134,9 +135,9 @@ define(function (require, exports, module) {
   });
   var backArrowSurface = new Surface({
     size: [true, true],
-    content: '&#171;', //«
     properties: {
-      fontSize: '100px',
+      fontSize: '70px',
+      padding: '10px',
       fontWeight: 100
     }
   });
@@ -158,9 +159,9 @@ define(function (require, exports, module) {
   });
   var forwardArrowSurface = new Surface({
     size: [true, true],
-    content: '&#187;', //«
     properties: {
-      fontSize: '100px',
+      fontSize: '70px',
+      padding: '10px',
       fontWeight: 100
     }
   });
@@ -169,7 +170,7 @@ define(function (require, exports, module) {
     if (scrollWheel.index > 0) {
       scrollWheel.index--;
       scrollWheel.goToPreviousPage();
-      dotsSurface.updateDots();
+      updateDotsAndArrows();
     }
   });
   forwardSurface.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
@@ -180,6 +181,8 @@ define(function (require, exports, module) {
   var forwardNode = container.add(forwardModifier);
   forwardNode.add(forwardSurface);
   forwardNode.add(forwardArrowModifier).add(forwardArrowSurface);
+
+  updateDotsAndArrows();
 
   mainContext.add(container);
 
