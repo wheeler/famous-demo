@@ -66,8 +66,7 @@ define(function (require, exports, module) {
     var rn = new RenderNode();
     var m = new Modifier({
       align: [.5,.5],
-      origin: [.5,.5],
-      transform: Transform.translate(0,0,1)
+      origin: [.5,.5]
     });
     rn.add(bgs);
     rn.add(m).add(s);
@@ -76,6 +75,7 @@ define(function (require, exports, module) {
 
   scrollWheel.setDataSource(pages);
 
+  // for debugging
   wheel = scrollWheel;
 
   // Create a container-surface for clipping and give it a nice perspective
