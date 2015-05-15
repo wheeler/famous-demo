@@ -109,7 +109,7 @@ define(function (require, exports, module) {
     size: [undefined, 28],
     align: [1,1],
     origin: [1,1],
-    transform: Transform.translate(0, 0, 10)
+    transform: Transform.translate(0, 0, 20)
   });
   container.add(dotsModifier).add(dotsSurface);
 
@@ -117,32 +117,50 @@ define(function (require, exports, module) {
   // Set up the backwards / forwards arrows
   //
   var backSurface = new Surface({
-    size: [true, true],
-    content: '&#171;', //«
     properties: {
-      fontSize: '100px',
-      fontWeight: 100,
       zIndex: 10
     }
   });
   var backModifier = new Modifier({
-    align: [.5, .5],
+    size: [itemSize/2, undefined],
+    align: [0.5, 0],
     origin: [0, 0],
     transform: Transform.translate(-(itemSize/2), 0, 10)
   });
-  var forwardSurface = new Surface({
+  var backArrowSurface = new Surface({
     size: [true, true],
-    content: '&#187;', //»
+    content: '&#171;', //«
     properties: {
       fontSize: '100px',
-      fontWeight: 100,
+      fontWeight: 100
+    }
+  });
+  var backArrowModifier = new Modifier({
+    align: [0, .5],
+    origin: [0, .5]
+  });
+  var forwardSurface = new Surface({
+    properties: {
       zIndex: 10
     }
   });
   var forwardModifier = new Modifier({
-    align: [.5, .5],
+    size: [itemSize/2, undefined],
+    align: [.5, 0],
     origin: [1, 0],
     transform: Transform.translate(390, 0, 10)
+  });
+  var forwardArrowModifier = new Modifier({
+    align: [1, .5],
+    origin: [1, .5]
+  });
+  var forwardArrowSurface = new Surface({
+    size: [true, true],
+    content: '&#187;', //«
+    properties: {
+      fontSize: '100px',
+      fontWeight: 100
+    }
   });
 
   backSurface.on('click', function() {
@@ -154,8 +172,12 @@ define(function (require, exports, module) {
   });
   forwardSurface.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
 
-  container.add(backModifier).add(backSurface);
-  container.add(forwardModifier).add(forwardSurface);
+  var backNode = container.add(backModifier);
+  backNode.add(backSurface);
+  backNode.add(backArrowModifier).add(backArrowSurface);
+  var forwardNode = container.add(forwardModifier);
+  forwardNode.add(forwardSurface);
+  forwardNode.add(forwardArrowModifier).add(forwardArrowSurface);
 
   mainContext.add(container);
 
