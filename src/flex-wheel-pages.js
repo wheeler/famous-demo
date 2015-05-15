@@ -80,7 +80,7 @@ define(function (require, exports, module) {
   // for debugging
   wheel = scrollWheel;
 
-  // Create a container-surface for clipping and give it a nice perspective
+  // Create a container-surface for clipping and optional perspective
   var container = new ContainerSurface({
     properties: {
       overflow: 'hidden',
@@ -158,12 +158,23 @@ define(function (require, exports, module) {
     });
   }
 
-  var forwardModifier = new Modifier({
-    size: [hasBackArrow ? itemSize/2 : undefined, undefined],
-    align: [.5, 0],
-    origin: [1, 0],
-    transform: Transform.translate(390, 0, 10)
-  });
+  var forwardModifier;
+  if (hasBackArrow) {
+    forwardModifier = new Modifier({
+      size: [itemSize/2, undefined],
+      align: [.5, 0],
+      origin: [1, 0],
+      transform: Transform.translate(390, 0, 10)
+    });
+  }
+  else {
+    forwardModifier = new Modifier({
+      size: [itemSize, undefined],
+      align: [.5, 0],
+      origin: [.5, 0],
+      transform: Transform.translate(0, 0, 10)
+    });
+  }
   var forwardSurface = new Surface({
     properties: {
       zIndex: 10
