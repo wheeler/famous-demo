@@ -99,7 +99,7 @@ define(function (require, exports, module) {
       display: 'table',
       textAlign: 'center',
       fontSize: '24px',
-      zIndex: 10
+      zIndex: 20
     }
   });
   var updateDotsAndArrows = function() {
