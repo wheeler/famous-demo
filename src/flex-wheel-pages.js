@@ -6,6 +6,7 @@ define(function (require, exports, module) {
   var Engine     = require("famous/core/Engine");
   var Surface    = require("famous/core/Surface");
   var Modifier   = require("famous/core/Modifier");
+  var RenderNode   = require("famous/core/RenderNode");
   var Transform   = require("famous/core/Transform");
   var ContainerSurface = require("famous/surfaces/ContainerSurface");
 
@@ -19,7 +20,6 @@ define(function (require, exports, module) {
     layout: WheelLayout,
     direction: 0,
     paginated: true,
-    paginationEnergyThresshold: 0.5,
     enabled: false,
     layoutOptions: {
       itemSize: itemSize,
@@ -49,18 +49,29 @@ define(function (require, exports, module) {
     }
   };
 
-  var pages = _.map(['FIRST','<img src="../images/kiwi.svg">','THIRD','<img src="../images/iphone.png">','FIFTH'], function(content) {
+  var pages = _.map(['FIRST','<img src="../images/kiwi.svg">','THIRD','<img src="../images/bf.png">','FIFTH'], function(content) {
+    var bgs = new Surface({
+      size: [undefined,undefined],
+      properties: {
+        background: '#FF99FF',
+        zIndex: -1
+      }
+    });
     var s = new Surface({
       content: content,
+      size: [true,true],
       properties: {
-        textAlign: 'center',
-        lineHeight: '400px',
-        background: '#FF99FF',
         fontSize: '150px'
       }});
-    s.pipe(scrollWheel);
-    s.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
-    return s;
+    var rn = new RenderNode();
+    var m = new Modifier({
+      align: [.5,.5],
+      origin: [.5,.5],
+      transform: Transform.translate(0,0,1)
+    });
+    rn.add(bgs);
+    rn.add(m).add(s);
+    return rn;
   });
 
   scrollWheel.setDataSource(pages);
