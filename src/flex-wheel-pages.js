@@ -172,6 +172,9 @@ define(function (require, exports, module) {
       scrollWheel.goToPreviousPage();
       updateDotsAndArrows();
     }
+    else {
+      scrollWheel.nextPageWithLoop.call(scrollWheel);
+    }
   });
   forwardSurface.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
 
