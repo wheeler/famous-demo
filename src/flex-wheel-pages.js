@@ -49,7 +49,7 @@ define(function (require, exports, module) {
     }
   };
 
-  var pages = _.map(['FIRST','SECOND','THIRD','FOURTH','FIFTH'], function(content) {
+  var pages = _.map(['FIRST','<img src="../images/kiwi.svg">','THIRD','<img src="../images/iphone.png">','FIFTH'], function(content) {
     var s = new Surface({
       content: content,
       properties: {
