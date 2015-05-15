@@ -101,7 +101,7 @@ define(function (require, exports, module) {
     }
     dotsSurface.setContent(result);
     backArrowSurface.setContent((scrollWheel.index === 0 ? '' : '&larr;'));
-    forwardArrowSurface.setContent((scrollWheel.index === pages.length-1 ? '&#8635;' : '&rarr;'));
+    forwardArrowSurface.setContent((scrollWheel.index === pages.length-1 ? '&#8617;' : '&rarr;'));
   };
   dotsSurface.on('click', function(evt) {
     var index = $(evt.target).data('dotIndex');
