@@ -39,6 +39,13 @@ define(function (require, exports, module) {
       this.goToNextPage();
     dotsSurface.updateDots();
   };
+  scrollWheel.toPage = function(pageId) {
+    if (pageId >= 0 && pageId < pages.length && scrollWheel.index !== pageId) {
+      scrollWheel.goToRenderNode(pages[pageId]);
+      scrollWheel.index = pageId;
+      dotsSurface.updateDots();
+    }
+  };
 
   var pages = _.map(['FIRST','SECOND','THIRD','FOURTH','FIFTH'], function(content) {
     var s = new Surface({
@@ -68,6 +75,10 @@ define(function (require, exports, module) {
   //container.context.setPerspective(1500);
   container.add(scrollWheel);
 
+  //
+  // Set up the DOTS at the bottom
+  //
+
   var dotsContent = function(selectedIndex) {
     var result = '';
     for (var i=0 ; i<pages.length ; i++) {
@@ -95,18 +106,27 @@ define(function (require, exports, module) {
       if (i === scrollWheel.index)
         result += '<span style="color: white;">&#9679;</span>';
       else
-        result += '&#9679;';
+        result += '<span style="" data-dot-index="'+i+'">&#9679;</span>';
     }
     this.setContent(result)
   };
   dotsSurface.updateDots();
+  dotsSurface.on('click', function(evt) {
+    var index = $(evt.target).data('dotIndex');
+    if (_.isNumber(index))
+      scrollWheel.toPage(index);
+  });
   var dotsModifier = new Modifier({
     size: [undefined, 28],
     align: [1,1],
-    origin: [1,1]
+    origin: [1,1],
+    transform: Transform.translate(0, 0, 10)
   });
   container.add(dotsModifier).add(dotsSurface);
 
+  //
+  // Set up the backwards / forwards arrows
+  //
   var backSurface = new Surface({
     size: [true, true],
     content: '&#171;', //«
@@ -149,7 +169,5 @@ define(function (require, exports, module) {
   container.add(forwardModifier).add(forwardSurface);
 
   mainContext.add(container);
-
-
 
 });
