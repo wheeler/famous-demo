@@ -160,7 +160,7 @@ define(function (require, exports, module) {
     if (scrollWheel.index > 0) {
       scrollWheel.index--;
       scrollWheel.goToPreviousPage();
-      scrollWheel.updateDots();
+      dotsSurface.updateDots();
     }
   });
   forwardSurface.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
