@@ -169,10 +169,13 @@ define(function (require, exports, module) {
   }
   else {
     forwardModifier = new Modifier({
-      size: [itemSize, undefined],
       align: [.5, 0],
       origin: [.5, 0],
       transform: Transform.translate(0, 0, 10)
+    });
+    forwardModifier.sizeFrom(function() {
+      var xSize = container.getSize()[0] < itemSize ? undefined : itemSize;
+      return [xSize, undefined];
     });
   }
   var forwardSurface = new Surface({
