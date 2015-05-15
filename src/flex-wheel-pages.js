@@ -4,6 +4,7 @@ define(function (require, exports, module) {
   var Engine     = require("famous/core/Engine");
   var Surface    = require("famous/core/Surface");
   var Modifier   = require("famous/core/Modifier");
+  var Transform   = require("famous/core/Transform");
   var ContainerSurface = require("famous/surfaces/ContainerSurface");
 
   var ScrollController = require('famous-flex/ScrollController');
@@ -19,32 +20,37 @@ define(function (require, exports, module) {
     paginationEnergyThresshold: 0.5,
     enabled: false,
     layoutOptions: {
-      itemSize: 400,
-      diameter: 400,
+      itemSize: 780,
+      diameter: 780,
       radialOpacity: 0  // make items at the edges more transparent
     }
   });
 
-  scrollWheel.goToNextPageWithLoop = function() {
-    var lastDataIndex = this._dataSource.length - 1;
-    if (this.getFirstVisibleItem().index === lastDataIndex)
+  scrollWheel.index = 0;
+
+  scrollWheel.nextPageWithLoop = function() {
+    scrollWheel.index++;
+    var dataLength = this._dataSource.length;
+    if (scrollWheel.index >= dataLength) {
       this.goToFirstPage();
+      scrollWheel.index = 0;
+    }
     else
       this.goToNextPage();
-    var newIndex = (this.getFirstVisibleItem().index + 1) % pages.length;
-    dotsSurface.setContent(dotsContent(newIndex));
+    dotsSurface.updateDots();
   };
 
-  var pages = _.map(['FIRST','SECOND','THIRD'], function(content) {
+  var pages = _.map(['FIRST','SECOND','THIRD','FOURTH','FIFTH'], function(content) {
     var s = new Surface({
       content: content,
       properties: {
         textAlign: 'center',
-        lineHeight: '200px',
-        background: '#FF99FF'
+        lineHeight: '400px',
+        background: '#FF99FF',
+        fontSize: '150px'
       }});
     s.pipe(scrollWheel);
-    s.on('click', scrollWheel.goToNextPageWithLoop.bind(scrollWheel));
+    s.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
     return s;
   });
 
@@ -75,21 +81,72 @@ define(function (require, exports, module) {
     return result;
   };
   var dotsSurface = new Surface({
-    content: dotsContent(0),
     properties: {
       textAlign: 'center',
-      fontSize: '24px'
+      fontSize: '24px',
+      zIndex: 10
     }
   });
+  dotsSurface.updateDots = function() {
+    var result = '';
+    for (var i=0 ; i<pages.length ; i++) {
+      if (result !== '')
+        result += ' ';
+      if (i === scrollWheel.index)
+        result += '<span style="color: white;">&#9679;</span>';
+      else
+        result += '&#9679;';
+    }
+    this.setContent(result)
+  };
+  dotsSurface.updateDots();
   var dotsModifier = new Modifier({
     size: [undefined, 28],
     align: [1,1],
     origin: [1,1]
   });
-
   container.add(dotsModifier).add(dotsSurface);
 
+  var backSurface = new Surface({
+    size: [true, true],
+    content: '&#171;', //«
+    properties: {
+      fontSize: '100px',
+      fontWeight: 100,
+      zIndex: 10
+    }
+  });
+  var backModifier = new Modifier({
+    align: [.5, .5],
+    origin: [0, 0],
+    transform: Transform.translate(-390, 0, 10)
+  });
+  var forwardSurface = new Surface({
+    size: [true, true],
+    content: '&#187;', //»
+    properties: {
+      fontSize: '100px',
+      fontWeight: 100,
+      zIndex: 10
+    }
+  });
+  var forwardModifier = new Modifier({
+    align: [.5, .5],
+    origin: [1, 0],
+    transform: Transform.translate(390, 0, 10)
+  });
 
+  backSurface.on('click', function() {
+    if (scrollWheel.index > 0) {
+      scrollWheel.index--;
+      scrollWheel.goToPreviousPage();
+      scrollWheel.updateDots();
+    }
+  });
+  forwardSurface.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
+
+  container.add(backModifier).add(backSurface);
+  container.add(forwardModifier).add(forwardSurface);
 
   mainContext.add(container);
 
