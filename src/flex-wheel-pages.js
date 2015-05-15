@@ -1,4 +1,6 @@
 
+var hasBackArrow = false;
+
 define(function (require, exports, module) {
 
   var itemSize = 780;
@@ -59,7 +61,7 @@ define(function (require, exports, module) {
     });
     var s = new Surface({
       content: content,
-      size: [true,true],
+      size: [true, true],
       properties: {
         fontSize: '150px'
       }});
@@ -111,7 +113,8 @@ define(function (require, exports, module) {
         result += '<div style="display: table-cell; vertical-align: top; padding: 4px 5px; cursor: pointer; " data-dot-index="'+i+'">&#9679;</div>';
     }
     dotsSurface.setContent(result);
-    backArrowSurface.setContent((scrollWheel.index === 0 ? '' : '&larr;'));
+    if (hasBackArrow)
+      backArrowSurface.setContent((scrollWheel.index === 0 ? '' : '&larr;'));
     forwardArrowSurface.setContent((scrollWheel.index === pages.length-1 ? '&#8617;' : '&rarr;'));
   };
   dotsSurface.on('click', function(evt) {
@@ -129,32 +132,34 @@ define(function (require, exports, module) {
   //
   // Set up the backwards / forwards arrows
   //
-  var backModifier = new Modifier({
-    size: [itemSize/2, undefined],
-    align: [0.5, 0],
-    origin: [0, 0],
-    transform: Transform.translate(-(itemSize/2), 0, 10)
-  });
-  var backSurface = new Surface({
-    properties: {
-      zIndex: 10
-    }
-  });
-  var backArrowModifier = new Modifier({
-    align: [0, .5],
-    origin: [0, .5]
-  });
-  var backArrowSurface = new Surface({
-    size: [true, true],
-    properties: {
-      fontSize: '70px',
-      padding: '10px',
-      fontWeight: 100
-    }
-  });
+  if (hasBackArrow) {
+    var backModifier = new Modifier({
+      size: [itemSize / 2, undefined],
+      align: [0.5, 0],
+      origin: [0, 0],
+      transform: Transform.translate(-(itemSize / 2), 0, 10)
+    });
+    var backSurface = new Surface({
+      properties: {
+        zIndex: 10
+      }
+    });
+    var backArrowModifier = new Modifier({
+      align: [0, .5],
+      origin: [0, .5]
+    });
+    var backArrowSurface = new Surface({
+      size: [true, true],
+      properties: {
+        fontSize: '70px',
+        padding: '10px',
+        fontWeight: 100
+      }
+    });
+  }
 
   var forwardModifier = new Modifier({
-    size: [itemSize/2, undefined],
+    size: [hasBackArrow ? itemSize/2 : undefined, undefined],
     align: [.5, 0],
     origin: [1, 0],
     transform: Transform.translate(390, 0, 10)
@@ -177,21 +182,24 @@ define(function (require, exports, module) {
     }
   });
 
-  backSurface.on('click', function() {
-    if (scrollWheel.index > 0) {
-      scrollWheel.index--;
-      scrollWheel.goToPreviousPage();
-      updateDotsAndArrows();
-    }
-    else {
-      scrollWheel.nextPageWithLoop.call(scrollWheel);
-    }
-  });
-  forwardSurface.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
+  if (hasBackArrow) {
+    backSurface.on('click', function () {
+      if (scrollWheel.index > 0) {
+        scrollWheel.index--;
+        scrollWheel.goToPreviousPage();
+        updateDotsAndArrows();
+      }
+      else {
+        scrollWheel.nextPageWithLoop.call(scrollWheel);
+      }
+    });
 
-  var backNode = container.add(backModifier);
-  backNode.add(backSurface);
-  backNode.add(backArrowModifier).add(backArrowSurface);
+    var backNode = container.add(backModifier);
+    backNode.add(backSurface);
+    backNode.add(backArrowModifier).add(backArrowSurface);
+  }
+
+  forwardSurface.on('click', scrollWheel.nextPageWithLoop.bind(scrollWheel));
   var forwardNode = container.add(forwardModifier);
   forwardNode.add(forwardSurface);
   forwardNode.add(forwardArrowModifier).add(forwardArrowSurface);
