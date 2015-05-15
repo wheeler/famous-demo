@@ -117,16 +117,20 @@ define(function (require, exports, module) {
   //
   // Set up the backwards / forwards arrows
   //
-  var backSurface = new Surface({
-    properties: {
-      zIndex: 10
-    }
-  });
   var backModifier = new Modifier({
     size: [itemSize/2, undefined],
     align: [0.5, 0],
     origin: [0, 0],
     transform: Transform.translate(-(itemSize/2), 0, 10)
+  });
+  var backSurface = new Surface({
+    properties: {
+      zIndex: 10
+    }
+  });
+  var backArrowModifier = new Modifier({
+    align: [0, .5],
+    origin: [0, .5]
   });
   var backArrowSurface = new Surface({
     size: [true, true],
@@ -136,20 +140,17 @@ define(function (require, exports, module) {
       fontWeight: 100
     }
   });
-  var backArrowModifier = new Modifier({
-    align: [0, .5],
-    origin: [0, .5]
-  });
-  var forwardSurface = new Surface({
-    properties: {
-      zIndex: 10
-    }
-  });
+
   var forwardModifier = new Modifier({
     size: [itemSize/2, undefined],
     align: [.5, 0],
     origin: [1, 0],
     transform: Transform.translate(390, 0, 10)
+  });
+  var forwardSurface = new Surface({
+    properties: {
+      zIndex: 10
+    }
   });
   var forwardArrowModifier = new Modifier({
     align: [1, .5],
