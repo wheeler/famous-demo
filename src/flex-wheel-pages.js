@@ -1,6 +1,8 @@
 
 define(function (require, exports, module) {
 
+  var itemSize = 780;
+
   var Engine     = require("famous/core/Engine");
   var Surface    = require("famous/core/Surface");
   var Modifier   = require("famous/core/Modifier");
@@ -20,8 +22,8 @@ define(function (require, exports, module) {
     paginationEnergyThresshold: 0.5,
     enabled: false,
     layoutOptions: {
-      itemSize: 780,
-      diameter: 780,
+      itemSize: itemSize,
+      diameter: itemSize,
       radialOpacity: 0  // make items at the edges more transparent
     }
   });
@@ -139,7 +141,7 @@ define(function (require, exports, module) {
   var backModifier = new Modifier({
     align: [.5, .5],
     origin: [0, 0],
-    transform: Transform.translate(-390, 0, 10)
+    transform: Transform.translate(-(itemSize/2), 0, 10)
   });
   var forwardSurface = new Surface({
     size: [true, true],
