@@ -81,7 +81,9 @@ define(function (require, exports, module) {
   // Set up the DOTS at the bottom
   //
   var dotsSurface = new Surface({
+    size: [true, true],
     properties: {
+      display: 'table',
       textAlign: 'center',
       fontSize: '24px',
       zIndex: 10
@@ -93,9 +95,9 @@ define(function (require, exports, module) {
       if (result !== '')
         result += ' ';
       if (i === scrollWheel.index)
-        result += '<span style="color: white;">&#9679;</span>';
+        result += '<div style="display: table-cell; vertical-align: top; padding: 4px 5px; color: white;">&#9679;</div>';
       else
-        result += '<span style="" data-dot-index="'+i+'">&#9679;</span>';
+        result += '<div style="display: table-cell; vertical-align: top; padding: 4px 5px; cursor: pointer; " data-dot-index="'+i+'">&#9679;</div>';
     }
     this.setContent(result)
   };
@@ -106,9 +108,8 @@ define(function (require, exports, module) {
       scrollWheel.toPage(index);
   });
   var dotsModifier = new Modifier({
-    size: [undefined, 28],
-    align: [1,1],
-    origin: [1,1],
+    align: [.5, 1],
+    origin: [.5, 1],
     transform: Transform.translate(0, 0, 20)
   });
   container.add(dotsModifier).add(dotsSurface);
