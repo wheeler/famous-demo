@@ -3,4 +3,4 @@ famous-demo
 
 Some of my experiments with famo.us.
 
-http://mhwheeler.github.io/famous-demo/
+http://wheeler.github.io/famous-demo/
